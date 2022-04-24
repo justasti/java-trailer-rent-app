@@ -5,42 +5,34 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class DatabaseReader {
+public abstract class DatabaseReader {
 
-  private String path;
+  protected String path;
 
   public DatabaseReader(String path) {
 
     this.path = path;
   }
 
-  public ArrayList getAllTrailers() {
-    ArrayList<Trailer> trailers = new ArrayList<>();
+  protected abstract ArrayList getAllEntries();
 
+  protected void addUsersToFile( ArrayList<User> users) {
     try {
-      File file = new File(path);
-      Scanner sc = new Scanner(file);
-      while (sc.hasNextLine()) {
-        String brand = sc.nextLine();
-        String licensePlate = sc.nextLine();
-        int maxCapacity = sc.nextInt();
-        sc.nextLine();
-        int axles = sc.nextInt();
-        sc.nextLine();
-        boolean cover = sc.nextBoolean();
-        sc.nextLine();
-        sc.nextLine();
+      FileWriter fw = new FileWriter(path);
+      PrintWriter printer = new PrintWriter(fw);
 
-        trailers.add(new Trailer(brand, licensePlate, maxCapacity, axles, cover));
+      for (User user : users) {
+        printer.println(user.getUsername());
+        printer.println(user.getPassword());
+        printer.println();
       }
-    } catch (FileNotFoundException e) {
+      printer.close();
+    } catch (IOException e) {
       System.out.println(e);
     }
-    return trailers;
   }
 
-
-  public void addToFile(ArrayList<Trailer> trailers) {
+  protected void addTrailersToFile( ArrayList<Trailer> trailers) {
     try {
       FileWriter fw = new FileWriter(path);
       PrintWriter printer = new PrintWriter(fw);
@@ -58,5 +50,4 @@ public class DatabaseReader {
       System.out.println(e);
     }
   }
-
 }
