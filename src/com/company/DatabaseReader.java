@@ -17,6 +17,7 @@ public abstract class DatabaseReader {
   protected abstract ArrayList getAllEntries();
 
   protected void addUsersToFile( ArrayList<User> users) {
+
     try {
       FileWriter fw = new FileWriter(path);
       PrintWriter printer = new PrintWriter(fw);
@@ -26,13 +27,16 @@ public abstract class DatabaseReader {
         printer.println(user.getPassword());
         printer.println();
       }
+
       printer.close();
     } catch (IOException e) {
+
       System.out.println(e);
     }
   }
 
   protected void addTrailersToFile( ArrayList<Trailer> trailers) {
+
     try {
       FileWriter fw = new FileWriter(path);
       PrintWriter printer = new PrintWriter(fw);
@@ -43,10 +47,15 @@ public abstract class DatabaseReader {
         printer.println(trailer.getMaxCapacity());
         printer.println(trailer.getAxles());
         printer.println(trailer.hasCover());
+        printer.println(trailer.getParkingSpace());
+        printer.println(trailer.getRentalPrice());
+        printer.println(trailer.isRented());
         printer.println();
       }
+
       printer.close();
     } catch (IOException e) {
+
       System.out.println(e);
     }
   }

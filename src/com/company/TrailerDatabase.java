@@ -31,9 +31,11 @@ public class TrailerDatabase extends DatabaseReader {
         sc.nextLine();
         int rentalPrice = sc.nextInt();
         sc.nextLine();
+        boolean isRented = sc.nextBoolean();
+        sc.nextLine();
         sc.nextLine();
 
-        trailers.add(new Trailer(brand, licensePlate, maxCapacity, axles, cover, parkingSpace, rentalPrice));
+        trailers.add(new Trailer(brand, licensePlate, maxCapacity, axles, cover, parkingSpace, rentalPrice, isRented));
       }
     } catch (
         FileNotFoundException e) {
