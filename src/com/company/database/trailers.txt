@@ -5,14 +5,23 @@ HM639
 false
 1
 10
-false
+true
 
 MAX
 HM639
-11000
+1500
 3
 false
 2
 20
-true
+false
+
+TAURAS
+LA123
+750
+1
+false
+3
+10
+false
 

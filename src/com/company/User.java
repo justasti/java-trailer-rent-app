@@ -24,11 +24,12 @@ public class User {
     return lastOrder;
   }
 
+  public void setLastOrder(Order lastOrder) {
+    this.lastOrder = lastOrder;
+  }
+
   @Override
   public String toString() {
-    return "User{" +
-        "username='" + username + '\'' +
-        ", password='" + password + '\'' +
-        '}';
+    return username;
   }
 }

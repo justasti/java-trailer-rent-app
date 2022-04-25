@@ -1,4 +1,6 @@
-package com.company;
+package com.company.database;
+
+import com.company.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -7,14 +9,14 @@ import java.util.Scanner;
 public class TrailerDatabase extends DatabaseReader {
 
 
-
   public TrailerDatabase(String path) {
     super(path);
   }
+
   ArrayList<Trailer> trailers = new ArrayList<>();
 
   @Override
-  protected ArrayList getAllEntries() {
+  public ArrayList getAllEntries() {
     try {
       File file = new File(path);
       Scanner sc = new Scanner(file);
@@ -39,8 +41,17 @@ public class TrailerDatabase extends DatabaseReader {
       }
     } catch (
         FileNotFoundException e) {
-      System.out.println(e);
+      System.out.println(e.getMessage());
     }
     return trailers;
+  }
+
+  public Trailer getTrailer(int weight) {
+    for (Trailer trailer : trailers) {
+      if (trailer.getMaxCapacity() == weight && !trailer.isRented()) {
+        return trailer;
+      }
+    }
+    return null;
   }
 }

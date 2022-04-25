@@ -1,5 +1,4 @@
 package com.company;
-
 public class Trailer {
 
   private String brand;
@@ -76,8 +75,7 @@ public class Trailer {
 
   @Override
   public String toString() {
-    return"Priekaba: " +
-        "\nGamintojas: " + brand +
+    return "\nGamintojas: " + brand +
         "\nValstybinis nr.: " + licensePlate +
         "\nMaksimalus leistinas svoris: " + maxCapacity +
         "\nAšių skaičius: " + axles +
