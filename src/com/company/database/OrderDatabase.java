@@ -21,8 +21,9 @@ public class OrderDatabase extends DatabaseReader {
       Scanner sc = new Scanner(file);
 
       while (sc.hasNextLine()) {
+        int id = sc.nextInt();
+        sc.nextLine();
         String username = sc.nextLine();
-        String password = sc.nextLine();
         String date = sc.nextLine();
         String brand = sc.nextLine();
         String licensePlate = sc.nextLine();
@@ -40,7 +41,7 @@ public class OrderDatabase extends DatabaseReader {
         sc.nextLine();
         sc.nextLine();
 
-        orders.add(new Order(new User(username, password), LocalDate.parse(date), new Trailer(brand, licensePlate, maxCapacity, axles, cover, parkingSpace, rentalPrice, isRented)));
+        orders.add(new Order(id, username, LocalDate.parse(date), new Trailer(brand, licensePlate, maxCapacity, axles, cover, parkingSpace, rentalPrice, isRented)));
       }
     } catch (
         FileNotFoundException e) {
@@ -70,8 +71,8 @@ public class OrderDatabase extends DatabaseReader {
       PrintWriter printer = new PrintWriter(fw);
 
       for (Order order : orders) {
-        printer.println(order.getUser().getUsername());
-        printer.println(order.getUser().getPassword());
+        printer.println(order.getId());
+        printer.println(order.getUsername());
         printer.println(order.getDate());
         printer.println(order.getTrailer().getBrand());
         printer.println(order.getTrailer().getLicensePlate());

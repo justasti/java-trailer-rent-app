@@ -2,7 +2,6 @@ package com.company;
 
 import com.company.database.*;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,9 +23,6 @@ public class Main {
     ArrayList<User> allUsers = usersDB.getAllEntries();
     ArrayList<Order> allOrders = ordersDB.getAllEntries();
     while (true) {
-      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      System.out.println(allOrders);
-      System.out.println();
       printStartMenu();
 
       System.out.print("Pasirinkite meniu punktą: ");
@@ -67,8 +63,9 @@ public class Main {
                         if (confirmChoice.equals("1")) {
 
                           trailerToRent.setRented(true);
-                          allOrders.add(new Order(userToLogin, LocalDate.now(), trailerToRent));
-                          userToLogin.setLastOrder(new Order(userToLogin, LocalDate.now(), trailerToRent));
+                          Order newOrder = new Order(allOrders.size() + 1, userToLogin.getUsername(), LocalDate.now(), trailerToRent);
+                          allOrders.add(newOrder);
+                          userToLogin.setLastOrder(newOrder.getId());
 
                           rewriteAllFiles(trailersDB, allTrailers, ordersDB, allOrders, usersDB, allUsers);
 
@@ -81,6 +78,15 @@ public class Main {
                         System.out.println("NO");
                       }
                       break;
+                  }
+                case "3":
+                  break;
+                case "4":
+                  Order lastOrder = usersDB.getUserLastOrder(userToLogin, allOrders);
+                  if (lastOrder != null) {
+                    System.out.println(lastOrder);
+                  } else {
+                    System.out.println("Vartotojas užsakymų dar neatliko!");
                   }
               }
             }
@@ -97,7 +103,7 @@ public class Main {
           } else {
             System.out.println("Toks vartotojas jau egzistuoja");
           }
-          ;
+          usersDB.getAllEntries();
           break;
         case "9":
           System.out.println("9");
@@ -156,4 +162,6 @@ public class Main {
     ordersDB.addOrdersToFile(allOrders);
     usersDB.addUsersToFile(allUsers);
   }
+
+
 }

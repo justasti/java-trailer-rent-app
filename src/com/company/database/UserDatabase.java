@@ -60,7 +60,7 @@ public class UserDatabase extends DatabaseReader {
 
         printer.println(user.getUsername());
         printer.println(user.getPassword());
-        printer.println("null");
+        printer.println("0");
         printer.println();
 
         printer.close();
@@ -81,7 +81,7 @@ public class UserDatabase extends DatabaseReader {
       for (User user : users) {
         printer.println(user.getUsername());
         printer.println(user.getPassword());
-        printer.println(user.getLastOrder().toString());
+        printer.println(user.getLastOrder());
         printer.println();
       }
 
@@ -89,6 +89,20 @@ public class UserDatabase extends DatabaseReader {
     } catch (IOException e) {
 
       System.out.println(e);
+    }
+  }
+
+  public Order getUserLastOrder(User user, ArrayList<Order> allOrders) {
+    ArrayList<Order> selectedUserOrders = new ArrayList<>();
+    for (Order order : allOrders) {
+      if (order.getUsername().equals(user.getUsername())) {
+        selectedUserOrders.add(order);
+      }
+    }
+    if (selectedUserOrders.size() > 0) {
+      return selectedUserOrders.get(selectedUserOrders.size() - 1);
+    } else {
+      return null;
     }
   }
 

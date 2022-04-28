@@ -1,15 +1,16 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class User {
 
   private String username;
   private String password;
-  private Order lastOrder;
+  private int lastOrder;
 
   public User(String username, String password) {
     this.username = username;
     this.password = password;
-    this.lastOrder = null;
   }
 
   public String getUsername() {
@@ -20,13 +21,15 @@ public class User {
     return password;
   }
 
-  public Order getLastOrder() {
+  public int getLastOrder() {
     return lastOrder;
   }
 
-  public void setLastOrder(Order lastOrder) {
+  public void setLastOrder(int lastOrder) {
     this.lastOrder = lastOrder;
   }
+
+
 
   @Override
   public String toString() {

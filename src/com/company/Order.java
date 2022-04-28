@@ -1,23 +1,26 @@
 package com.company;
-import com.company.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Order {
-  User user;
-  LocalDate date;
-  Trailer trailer;
+  private String username;
+  private LocalDate date;
+  private Trailer trailer;
+  private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private int id = 1;
+  private static int nextId = 1;
 
-  public Order(User user, LocalDate date, Trailer trailer) {
-    this.user = user;
+  public Order(int id, String username, LocalDate date, Trailer trailer) {
+    this.username = username;
     this.date = date;
     this.trailer = trailer;
+    this.id = nextId;
+    nextId++;
   }
 
-  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-  public User getUser() {
-    return user;
+  public String getUsername() {
+    return username;
   }
 
   public String getDate() {
@@ -28,9 +31,13 @@ public class Order {
     return trailer;
   }
 
+  public int getId() {
+    return id;
+  }
+
   @Override
   public String toString() {
-    return "Vartotojas: " + user +
+    return "Vartotojas: " + username +
         " Pradžios data: " + date +
         " Priekaba: " + trailer.getLicensePlate();
   }
