@@ -4,16 +4,18 @@ import java.time.format.DateTimeFormatter;
 
 public class Order {
   private String username;
-  private LocalDate date;
-  private Trailer trailer;
+  private LocalDate startingDate;
+  private String licencePlate;
+  private boolean returned;
   private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
   private int id = 1;
   private static int nextId = 1;
 
-  public Order(int id, String username, LocalDate date, Trailer trailer) {
+  public Order(int id, String username, LocalDate startingDate, String licencePlate, boolean returned) {
     this.username = username;
-    this.date = date;
-    this.trailer = trailer;
+    this.startingDate = startingDate;
+    this.licencePlate = licencePlate;
+    this.returned = false;
     this.id = nextId;
     nextId++;
   }
@@ -23,22 +25,31 @@ public class Order {
     return username;
   }
 
-  public String getDate() {
-    return date.format(dtf);
+  public String getStartingDate() {
+    return startingDate.format(dtf);
   }
 
-  public Trailer getTrailer() {
-    return trailer;
+  public String getLicencePlate() {
+    return licencePlate;
   }
 
   public int getId() {
     return id;
   }
 
+  public boolean isReturned() {
+    return returned;
+  }
+
+  public void setReturned(boolean returned) {
+    this.returned = returned;
+  }
+
   @Override
   public String toString() {
     return "Vartotojas: " + username +
-        " Pradžios data: " + date +
-        " Priekaba: " + trailer.getLicensePlate();
+        " Pradžios data: " + startingDate +
+        " Priekaba: " + licencePlate +
+        " Statusas: " + (isReturned() ? "Užbaigtas" : "Aktyvus");
   }
 }

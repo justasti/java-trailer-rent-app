@@ -54,4 +54,43 @@ public class TrailerDatabase extends DatabaseReader {
     }
     return null;
   }
+
+  public Trailer getTrailer(String licensePlate) {
+    for (Trailer trailer : trailers) {
+      if (trailer.getLicensePlate().equalsIgnoreCase(licensePlate)) {
+        return trailer;
+      }
+    }
+    return null;
+  }
+
+  public void updateTrailer(Trailer trailer) throws IOException {
+    FileWriter fw = new FileWriter(path);
+    PrintWriter printer = new PrintWriter(fw);
+
+    ArrayList<Trailer> trailers = getAllEntries();
+
+    updateTrailerStatus(trailer, trailers);
+
+    for (Trailer trailerToWrite : trailers) {
+      printer.println(trailerToWrite.getBrand());
+      printer.println(trailerToWrite.getLicensePlate());
+      printer.println(trailerToWrite.getMaxCapacity());
+      printer.println(trailerToWrite.getAxles());
+      printer.println(trailerToWrite.hasCover());
+      printer.println(trailerToWrite.getParkingSpace());
+      printer.println(trailerToWrite.getRentalPrice());
+      printer.println(trailerToWrite.isRented());
+      printer.println();
+    }
+    printer.close();
+  }
+
+  private void updateTrailerStatus(Trailer trailer, ArrayList<Trailer> trailers) {
+    for (Trailer trailerToUpdate : trailers) {
+      if (trailerToUpdate.getLicensePlate().equalsIgnoreCase(trailer.getLicensePlate())) {
+        trailerToUpdate.setRented(trailer.isRented());
+      }
+    }
+  }
 }

@@ -21,7 +21,7 @@ public class UserDatabase extends DatabaseReader {
       while (sc.hasNextLine()) {
         String username = sc.nextLine();
         String password = sc.nextLine();
-        String lastOrder = sc.nextLine();
+        sc.nextLine();
         sc.nextLine();
 
         users.add(new User(username, password));
@@ -76,7 +76,7 @@ public class UserDatabase extends DatabaseReader {
 
     try {
       FileWriter fw = new FileWriter(path);
-      PrintWriter printer = new PrintWriter(fw, true);
+      PrintWriter printer = new PrintWriter(fw);
 
       for (User user : users) {
         printer.println(user.getUsername());
@@ -92,7 +92,7 @@ public class UserDatabase extends DatabaseReader {
     }
   }
 
-  public Order getUserLastOrder(User user, ArrayList<Order> allOrders) {
+  public ArrayList<Order> getUserOrders(User user, ArrayList<Order> allOrders) {
     ArrayList<Order> selectedUserOrders = new ArrayList<>();
     for (Order order : allOrders) {
       if (order.getUsername().equals(user.getUsername())) {
@@ -100,10 +100,12 @@ public class UserDatabase extends DatabaseReader {
       }
     }
     if (selectedUserOrders.size() > 0) {
-      return selectedUserOrders.get(selectedUserOrders.size() - 1);
+      return selectedUserOrders;
     } else {
       return null;
     }
   }
+
+
 
 }

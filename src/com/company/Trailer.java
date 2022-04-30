@@ -81,6 +81,6 @@ public class Trailer {
         "\nAšių skaičius: " + axles +
         "\nUždangalas: " + (cover ? "Yra" : "Nėra") +
         "\nStovėjimo vieta aikštelėje: " + parkingSpace +
-        "\nNuomos kaina dienai: " + rentalPrice;
+        "\nNuomos kaina dienai: " + rentalPrice + "\n";
   }
 }

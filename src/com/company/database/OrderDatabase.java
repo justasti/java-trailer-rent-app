@@ -12,10 +12,11 @@ public class OrderDatabase extends DatabaseReader {
     super(path);
   }
 
+
   ArrayList<Order> orders = new ArrayList<>();
 
   @Override
-  public ArrayList getAllEntries() {
+  public ArrayList<Order> getAllEntries() {
     try {
       File file = new File(path);
       Scanner sc = new Scanner(file);
@@ -25,23 +26,12 @@ public class OrderDatabase extends DatabaseReader {
         sc.nextLine();
         String username = sc.nextLine();
         String date = sc.nextLine();
-        String brand = sc.nextLine();
         String licensePlate = sc.nextLine();
-        int maxCapacity = sc.nextInt();
-        sc.nextLine();
-        int axles = sc.nextInt();
-        sc.nextLine();
-        boolean cover = sc.nextBoolean();
-        sc.nextLine();
-        int parkingSpace = sc.nextInt();
-        sc.nextLine();
-        int rentalPrice = sc.nextInt();
-        sc.nextLine();
-        boolean isRented = sc.nextBoolean();
+        boolean returned = sc.nextBoolean();
         sc.nextLine();
         sc.nextLine();
 
-        orders.add(new Order(id, username, LocalDate.parse(date), new Trailer(brand, licensePlate, maxCapacity, axles, cover, parkingSpace, rentalPrice, isRented)));
+        orders.add(new Order(id, username, LocalDate.parse(date), licensePlate, returned));
       }
     } catch (
         FileNotFoundException e) {
@@ -50,45 +40,54 @@ public class OrderDatabase extends DatabaseReader {
     return orders;
   }
 
-  public void addOrder(User user) {
-    try {
-      FileWriter fw = new FileWriter(path, true);
-      PrintWriter printer = new PrintWriter(fw);
-      printer.println(user.getUsername());
-      printer.println(user.getPassword());
-      printer.println();
-
-      printer.close();
-    } catch (IOException e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
   public void addOrdersToFile(ArrayList<Order> orders) {
 
     try {
-      FileWriter fw = new FileWriter(path);
+      FileWriter fw = new FileWriter(path, true);
       PrintWriter printer = new PrintWriter(fw);
 
       for (Order order : orders) {
         printer.println(order.getId());
         printer.println(order.getUsername());
-        printer.println(order.getDate());
-        printer.println(order.getTrailer().getBrand());
-        printer.println(order.getTrailer().getLicensePlate());
-        printer.println(order.getTrailer().getMaxCapacity());
-        printer.println(order.getTrailer().getAxles());
-        printer.println(order.getTrailer().hasCover());
-        printer.println(order.getTrailer().getParkingSpace());
-        printer.println(order.getTrailer().getRentalPrice());
-        printer.println(order.getTrailer().isRented());
+        printer.println(order.getStartingDate());
+        printer.println(order.getLicencePlate());
+        printer.println(order.isReturned());
+
         printer.println();
       }
 
       printer.close();
     } catch (IOException e) {
 
-      System.out.println(e);
+      System.out.println(e.getMessage());
     }
   }
+
+  public void updateOrder(Order order) throws IOException {
+    FileWriter fw = new FileWriter(path);
+    PrintWriter printer = new PrintWriter(fw);
+
+    ArrayList<Order> orders = getAllEntries();
+
+    updateOrderStatus(order, orders);
+
+    for (Order orderToWrite : orders) {
+      printer.println(orderToWrite.getId());
+      printer.println(orderToWrite.getUsername());
+      printer.println(orderToWrite.getStartingDate());
+      printer.println(orderToWrite.getLicencePlate());
+      printer.println(orderToWrite.isReturned());
+      printer.println();
+    }
+    printer.close();
+  }
+
+  private void updateOrderStatus(Order order, ArrayList<Order> orders) {
+    for (Order orderToUpdate : orders) {
+      if (orderToUpdate.getLicencePlate().equalsIgnoreCase(order.getLicencePlate())) {
+        orderToUpdate.setReturned(true);
+      }
+    }
+  }
+
 }

@@ -1,5 +1,5 @@
 DOMANTAS
-HM639
+HM638
 750
 1
 false
@@ -23,5 +23,14 @@ LA123
 false
 3
 10
+false
+
+MAX
+HM629
+3500
+3
+false
+2
+20
 false
 
