@@ -86,6 +86,11 @@ public class TrailerDatabase extends DatabaseReader {
     printer.close();
   }
 
+  public void removeTrailer(Trailer trailer) throws IOException {
+    trailers.remove(trailer);
+    updateTrailer(trailer);
+  }
+
   private void updateTrailerStatus(Trailer trailer, ArrayList<Trailer> trailers) {
     for (Trailer trailerToUpdate : trailers) {
       if (trailerToUpdate.getLicensePlate().equalsIgnoreCase(trailer.getLicensePlate())) {

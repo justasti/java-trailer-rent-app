@@ -43,7 +43,7 @@ public class OrderDatabase extends DatabaseReader {
   public void addOrdersToFile(ArrayList<Order> orders) {
 
     try {
-      FileWriter fw = new FileWriter(path, true);
+      FileWriter fw = new FileWriter(path);
       PrintWriter printer = new PrintWriter(fw);
 
       for (Order order : orders) {
@@ -68,6 +68,7 @@ public class OrderDatabase extends DatabaseReader {
     PrintWriter printer = new PrintWriter(fw);
 
     ArrayList<Order> orders = getAllEntries();
+    orders.remove(order);
 
     updateOrderStatus(order, orders);
 

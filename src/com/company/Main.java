@@ -42,69 +42,112 @@ public class Main {
           } else {
             System.out.println("Sėkmingai prisijungta\n");
             while (true) {
-              printUserMenu();
-              System.out.print("Pasirinkite meniu punktą: ");
-              userSelection = sc.nextLine();
+              if (userToLogin.getUsername().equalsIgnoreCase("admin")) {
+                printAdminMenu();
+                System.out.print("Pasirinkite meniu punktą: ");
+                userSelection = sc.nextLine();
 
-              switch (userSelection) {
-                case "1":
-                  System.out.println("-------------------");
-                  printAvailableTrailers(allTrailers);
-                  break;
+                switch (userSelection) {
+                  case "1":
+                    System.out.print("Įveskite priekabos gamintoją: ");
+                    String brand = sc.nextLine();
+                    System.out.print("Įveskite priekabos valstybinį numerį: ");
+                    String licensePlate = sc.nextLine();
+                    System.out.print("Įveskite priekabos maksimalią apkrovą (kg): ");
+                    int maxCapacity = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Įveskite priekabos ašių skaičių: ");
+                    int axles = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Ar priekaba turi tentą? (T/N): ");
+                    String cover = sc.nextLine();
+                    System.out.print("Įveskite priekabos nuomos kainą dienai: ");
+                    int rentalPrice = sc.nextInt();
+                    sc.nextLine();
+                    addNewTrailer(trailersDB, allTrailers, brand, licensePlate, maxCapacity, axles, cover, rentalPrice);
+                    break;
+                  case "2":
+                    System.out.print("Įveskite priekabos valstybinį numerį: ");
+                    String licensePlateToRemove = sc.nextLine();
+                    removeTrailer(trailersDB, licensePlateToRemove);
+                    break;
+                  case "3":
+                    System.out.println("Pakeisti priekabos valst. nr");
+                    break;
+                  case "0":
+                    return;
+                  default:
+                    System.out.println("Neatpažinta įvestis");
+                    break;
+                }
 
-                case "2":
-                  Trailer trailerToRent = null;
-                  printTrailersMenu();
-                  System.out.print("Pasirinkite meniu punktą: ");
-                  String selectedTrailer = sc.nextLine();
-                  switch (selectedTrailer) {
 
-                    case "1":
-                      trailerToRent = trailersDB.getTrailer(750);
-                      rentTrailerByWeigth(trailersDB, usersDB, ordersDB, sc, allTrailers, allUsers, allOrders, userToLogin, trailerToRent);
-                      break;
+              } else {
+                printUserMenu();
+                System.out.print("Pasirinkite meniu punktą: ");
+                userSelection = sc.nextLine();
 
-                    case "2":
-                      trailerToRent = trailersDB.getTrailer(1500);
-                      rentTrailerByWeigth(trailersDB, usersDB, ordersDB, sc, allTrailers, allUsers, allOrders, userToLogin, trailerToRent);
-                      break;
+                switch (userSelection) {
+                  case "1":
+                    System.out.println("-------------------");
+                    printAvailableTrailers(allTrailers);
+                    break;
 
-                    case "3":
-                      trailerToRent = trailersDB.getTrailer(3500);
-                      rentTrailerByWeigth(trailersDB, usersDB, ordersDB, sc, allTrailers, allUsers, allOrders, userToLogin, trailerToRent);
-                      break;
-                  }
-                  break;
+                  case "2":
+                    Trailer trailerToRent = null;
+                    printTrailersMenu();
+                    System.out.print("Pasirinkite meniu punktą: ");
+                    String selectedTrailer = sc.nextLine();
+                    switch (selectedTrailer) {
 
-                case "3":
-                  System.out.print("Įveskite priekabos valstybinį numerį: ");
-                  String licensePlate = sc.nextLine();
-                  Trailer trailerToReturn = trailersDB.getTrailer(licensePlate);
-                  if (trailerToReturn == null) {
-                    System.out.println("Tokia priekaba neegzistuoja.");
-                  } else if (!trailerToReturn.isRented()) {
-                    System.out.println("Priekaba nėra išnuomota.");
-                  } else {
-                    returnTrailer(trailerToReturn, userToLogin, ordersDB, trailersDB);
-                    System.out.printf("Priekaba sėkmingai grąžinta. Prašome pastatyti priekabą į %d stovėjimo aikštelės vietą\n", 1);
-                  }
-                  break;
+                      case "1":
+                        trailerToRent = trailersDB.getTrailer(750);
+                        rentTrailerByWeigth(trailersDB, ordersDB, sc, allOrders, userToLogin, trailerToRent);
+                        break;
 
-                case "4":
-                  ArrayList<Order> allUserOrders = usersDB.getUserOrders(userToLogin, allOrders);
-                  if (allUserOrders != null) {
-                    for (Order order : allUserOrders) {
-                      System.out.println(order);
-                    };
-                  } else {
-                    System.out.println("Vartotojas užsakymų dar neatliko!");
-                  }
-                  break;
+                      case "2":
+                        trailerToRent = trailersDB.getTrailer(1500);
+                        rentTrailerByWeigth(trailersDB, ordersDB, sc, allOrders, userToLogin, trailerToRent);
+                        break;
 
-                case "0":
-                  return;
-                default:
-                  System.out.println("Neatpažinta įvestis\n");
+                      case "3":
+                        trailerToRent = trailersDB.getTrailer(3500);
+                        rentTrailerByWeigth(trailersDB, ordersDB, sc, allOrders, userToLogin, trailerToRent);
+                        break;
+                    }
+                    break;
+
+                  case "3":
+                    System.out.print("Įveskite priekabos valstybinį numerį: ");
+                    String licensePlate = sc.nextLine();
+                    Trailer trailerToReturn = trailersDB.getTrailer(licensePlate);
+                    if (trailerToReturn == null) {
+                      System.out.println("Tokia priekaba neegzistuoja.");
+                    } else if (!trailerToReturn.isRented()) {
+                      System.out.println("Priekaba nėra išnuomota.");
+                    } else {
+                      returnTrailer(trailerToReturn, userToLogin, ordersDB, trailersDB);
+                      System.out.printf("Priekaba sėkmingai grąžinta. Prašome pastatyti priekabą į %d-ą stovėjimo aikštelės vietą\n", trailerToReturn.getParkingSpace());
+                    }
+                    break;
+
+                  case "4":
+                    ArrayList<Order> allUserOrders = usersDB.getUserOrders(userToLogin, allOrders);
+                    if (allUserOrders != null) {
+                      for (Order order : allUserOrders) {
+                        System.out.println(order);
+                      }
+                      ;
+                    } else {
+                      System.out.println("Vartotojas užsakymų dar neatliko!");
+                    }
+                    break;
+
+                  case "0":
+                    return;
+                  default:
+                    System.out.println("Neatpažinta įvestis\n");
+                }
               }
             }
           }
@@ -134,7 +177,32 @@ public class Main {
 
   }
 
-  private static void rentTrailerByWeigth(TrailerDatabase trailersDB, UserDatabase usersDB, OrderDatabase ordersDB, Scanner sc, ArrayList<Trailer> allTrailers, ArrayList<User> allUsers, ArrayList<Order> allOrders, User userToLogin, Trailer trailerToRent) {
+  private static void addNewTrailer(TrailerDatabase trailersDB, ArrayList<Trailer> allTrailers, String brand, String licensePlate, int maxCapacity, int axles, String cover, int rentalPrice) throws IOException {
+    Trailer newTrailer = new Trailer(brand, licensePlate,
+        maxCapacity, axles, cover.equalsIgnoreCase("T"),
+        allTrailers.size() + 1, rentalPrice, false);
+    allTrailers.add(newTrailer);
+    trailersDB.updateTrailer(newTrailer);
+  }
+
+  private static void removeTrailer(TrailerDatabase trailersDB, String licensePlateToRemove) throws IOException {
+    Trailer trailerToRemove = trailersDB.getTrailer(licensePlateToRemove);
+    if (trailerToRemove != null) {
+      trailersDB.removeTrailer(trailerToRemove);
+      System.out.println("Priekaba sėkmingai panaikinta.");
+    } else {
+      System.out.println("Priekaba su tokiu valstybiniu numeriu nerasta.\n");
+    }
+  }
+
+  private static void printAdminMenu() {
+    System.out.println("1. Įvesti naują priekabą");
+    System.out.println("2. Panaikinti priekabą");
+    System.out.println("3. Pakeisti priekabos valstybinį numerį");
+    System.out.println("0. Atsijungti");
+  }
+
+  private static void rentTrailerByWeigth(TrailerDatabase trailersDB, OrderDatabase ordersDB, Scanner sc, ArrayList<Order> allOrders, User userToLogin, Trailer trailerToRent) {
     if (trailerToRent != null) {
       System.out.println("Pasirinkta priekaba: \n" + trailerToRent);
       confirmChoiceMenu();
@@ -145,8 +213,12 @@ public class Main {
         Order newOrder = new Order(allOrders.size() + 1, userToLogin.getUsername(), LocalDate.now(), trailerToRent.getLicensePlate(), false);
         allOrders.add(newOrder);
         userToLogin.setLastOrder(newOrder.getId());
-
-        rewriteAllFiles(trailersDB, allTrailers, ordersDB, allOrders, usersDB, allUsers);
+        try {
+          trailersDB.updateTrailer(trailerToRent);
+        } catch (IOException e) {
+          System.out.println(e.getMessage());
+        }
+        ordersDB.addOrdersToFile(allOrders);
 
       } else if (confirmChoice.equals("2")) {
         return;
@@ -161,7 +233,6 @@ public class Main {
   private static void printStartMenu() {
     System.out.println("1. Prisijungti");
     System.out.println("2. Registruotis");
-    System.out.println("9. Administratoriaus meniu");
     System.out.println("0. Baigti darbą\n");
   }
 
@@ -198,12 +269,6 @@ public class Main {
     System.out.println("2. Grįžti atgal\n");
   }
 
-  private static void rewriteAllFiles(TrailerDatabase trailersDB, ArrayList<Trailer> allTrailers, OrderDatabase ordersDB, ArrayList<Order> allOrders, UserDatabase usersDB, ArrayList<User> allUsers) {
-    trailersDB.addTrailersToFile(allTrailers);
-    ordersDB.addOrdersToFile(allOrders);
-    usersDB.addUsersToFile(allUsers);
-  }
-
   public static void returnTrailer(Trailer trailer, User user, OrderDatabase orderDatabase, TrailerDatabase trailerDatabase) throws IOException {
     trailer.setRented(false);
 
@@ -219,5 +284,4 @@ public class Main {
     }
     System.out.println("Priekabos grąžinti neįmanoma");
   }
-
 }
