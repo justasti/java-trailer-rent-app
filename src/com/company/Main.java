@@ -72,7 +72,10 @@ public class Main {
                     removeTrailer(trailersDB, licensePlateToRemove);
                     break;
                   case "3":
-                    System.out.println("Pakeisti priekabos valst. nr");
+                    replaceLicensePlate(trailersDB, sc);
+                    break;
+                  case "4":
+                    changeRentalPrice(trailersDB, sc);
                     break;
                   case "0":
                     return;
@@ -134,6 +137,7 @@ public class Main {
 
                   case "4":
                     ArrayList<Order> allUserOrders = usersDB.getUserOrders(userToLogin, allOrders);
+                    System.out.println();
                     if (allUserOrders != null) {
                       for (Order order : allUserOrders) {
                         System.out.println(order);
@@ -178,6 +182,37 @@ public class Main {
 
   }
 
+  private static void changeRentalPrice(TrailerDatabase trailersDB, Scanner sc) throws IOException {
+    System.out.print("Įveskite priekabos valstybinį numerį: ");
+    String licensePlateToChange = sc.nextLine();
+    Trailer trailerToChange = trailersDB.getTrailer(licensePlateToChange);
+    if (trailerToChange == null) {
+      System.out.println("Priekaba su tokiais valstybiniais nr. neegzistuoja");
+    } else {
+      System.out.print("Įveskite naują nuomos kainą dienai: ");
+      int newPrice = sc.nextInt();
+      sc.nextLine();
+      trailerToChange.setRentalPrice(newPrice);
+      trailersDB.updateTrailer(trailerToChange);
+      System.out.println("Kaina sėkmingai atnaujinta.");
+    }
+  }
+
+  private static void replaceLicensePlate(TrailerDatabase trailersDB, Scanner sc) throws IOException {
+    System.out.print("Įveskite priekabos valstybinį numerį: ");
+    String licensePlateToChange = sc.nextLine();
+    Trailer trailerToChange = trailersDB.getTrailer(licensePlateToChange);
+    if (trailerToChange == null) {
+      System.out.println("Priekaba su tokiais valstybiniais nr. neegzistuoja.");
+    } else {
+      System.out.print("Įveskite naują valstybinį numerį: ");
+      String newLicensePlate = sc.nextLine();
+      trailerToChange.setLicensePlate(newLicensePlate);
+      trailersDB.updateTrailer(trailerToChange);
+      System.out.println("Valstybiniai numeriai sėkmingai atnaujinti.");
+    }
+  }
+
   private static void addNewTrailer(TrailerDatabase trailersDB, ArrayList<Trailer> allTrailers, String brand, String licensePlate, int maxCapacity, int axles, String cover, int rentalPrice) throws IOException {
     Trailer newTrailer = new Trailer(brand, licensePlate,
         maxCapacity, axles, cover.equalsIgnoreCase("T"),
@@ -201,6 +236,7 @@ public class Main {
     System.out.println("1. Įvesti naują priekabą");
     System.out.println("2. Panaikinti priekabą");
     System.out.println("3. Pakeisti priekabos valstybinį numerį");
+    System.out.println("4. Pakeisti priekabos nuomos kainą");
     System.out.println("0. Atsijungti\n");
   }
 

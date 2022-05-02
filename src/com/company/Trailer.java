@@ -53,16 +53,8 @@ public class Trailer {
     return rented;
   }
 
-  public void setParkingSpace(int parkingSpace) {
-    this.parkingSpace = parkingSpace;
-  }
-
   public void setLicensePlate(String licensePlate) {
     this.licensePlate = licensePlate;
-  }
-
-  public void setHasCover(boolean cover) {
-    this.cover = cover;
   }
 
   public void setRentalPrice(int rentalPrice) {
