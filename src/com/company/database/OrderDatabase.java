@@ -13,17 +13,14 @@ public class OrderDatabase extends DatabaseReader {
   }
 
 
-  ArrayList<Order> orders = new ArrayList<>();
-
   @Override
   public ArrayList<Order> getAllEntries() {
+    ArrayList<Order> orders = new ArrayList<>();
     try {
       File file = new File(path);
       Scanner sc = new Scanner(file);
 
       while (sc.hasNextLine()) {
-        int id = sc.nextInt();
-        sc.nextLine();
         String username = sc.nextLine();
         String date = sc.nextLine();
         String licensePlate = sc.nextLine();
@@ -31,7 +28,7 @@ public class OrderDatabase extends DatabaseReader {
         sc.nextLine();
         sc.nextLine();
 
-        orders.add(new Order(id, username, LocalDate.parse(date), licensePlate, returned));
+        orders.add(new Order(username, LocalDate.parse(date), licensePlate, returned));
       }
     } catch (
         FileNotFoundException e) {
@@ -47,7 +44,6 @@ public class OrderDatabase extends DatabaseReader {
       PrintWriter printer = new PrintWriter(fw);
 
       for (Order order : orders) {
-        printer.println(order.getId());
         printer.println(order.getUsername());
         printer.println(order.getStartingDate());
         printer.println(order.getLicencePlate());
@@ -63,17 +59,12 @@ public class OrderDatabase extends DatabaseReader {
     }
   }
 
-  public void updateOrder(Order order) throws IOException {
+  public void updateOrder(ArrayList<Order> allOrders) throws IOException {
     FileWriter fw = new FileWriter(path);
     PrintWriter printer = new PrintWriter(fw);
 
-    ArrayList<Order> orders = getAllEntries();
-    orders.remove(order);
 
-    updateOrderStatus(order, orders);
-
-    for (Order orderToWrite : orders) {
-      printer.println(orderToWrite.getId());
+    for (Order orderToWrite : allOrders) {
       printer.println(orderToWrite.getUsername());
       printer.println(orderToWrite.getStartingDate());
       printer.println(orderToWrite.getLicencePlate());
@@ -81,14 +72,6 @@ public class OrderDatabase extends DatabaseReader {
       printer.println();
     }
     printer.close();
-  }
-
-  private void updateOrderStatus(Order order, ArrayList<Order> orders) {
-    for (Order orderToUpdate : orders) {
-      if (orderToUpdate.getLicencePlate().equalsIgnoreCase(order.getLicencePlate())) {
-        orderToUpdate.setReturned(true);
-      }
-    }
   }
 
 }

@@ -4,7 +4,6 @@ public class User {
 
   private String username;
   private String password;
-  private int lastOrder;
 
   public User(String username, String password) {
     this.username = username;
@@ -18,15 +17,6 @@ public class User {
   public String getPassword() {
     return password;
   }
-
-  public int getLastOrder() {
-    return lastOrder;
-  }
-
-  public void setLastOrder(int lastOrder) {
-    this.lastOrder = lastOrder;
-  }
-
 
 
   @Override

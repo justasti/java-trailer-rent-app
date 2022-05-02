@@ -8,16 +8,14 @@ public class Order {
   private String licencePlate;
   private boolean returned;
   private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  private int id = 1;
-  private static int nextId = 1;
 
-  public Order(int id, String username, LocalDate startingDate, String licencePlate, boolean returned) {
+
+  public Order(String username, LocalDate startingDate, String licencePlate, boolean returned) {
     this.username = username;
     this.startingDate = startingDate;
     this.licencePlate = licencePlate;
-    this.returned = false;
-    this.id = nextId;
-    nextId++;
+    this.returned = returned;
+
   }
 
 
@@ -31,10 +29,6 @@ public class Order {
 
   public String getLicencePlate() {
     return licencePlate;
-  }
-
-  public int getId() {
-    return id;
   }
 
   public boolean isReturned() {

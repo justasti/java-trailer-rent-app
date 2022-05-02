@@ -13,7 +13,7 @@ public class UserDatabase extends DatabaseReader {
 
   ArrayList<User> users = new ArrayList<>();
 
-  public ArrayList getAllEntries() {
+  public ArrayList<User> getAllEntries() {
     try {
       File file = new File(path);
       Scanner sc = new Scanner(file);
@@ -21,7 +21,6 @@ public class UserDatabase extends DatabaseReader {
       while (sc.hasNextLine()) {
         String username = sc.nextLine();
         String password = sc.nextLine();
-        sc.nextLine();
         sc.nextLine();
 
         users.add(new User(username, password));
@@ -57,10 +56,8 @@ public class UserDatabase extends DatabaseReader {
         FileWriter fw = new FileWriter(path, true);
         PrintWriter printer = new PrintWriter(fw);
 
-
         printer.println(user.getUsername());
         printer.println(user.getPassword());
-        printer.println("0");
         printer.println();
 
         printer.close();
@@ -70,26 +67,6 @@ public class UserDatabase extends DatabaseReader {
       }
     }
     return false;
-  }
-
-  public void addUsersToFile(ArrayList<User> users) {
-
-    try {
-      FileWriter fw = new FileWriter(path);
-      PrintWriter printer = new PrintWriter(fw);
-
-      for (User user : users) {
-        printer.println(user.getUsername());
-        printer.println(user.getPassword());
-        printer.println(user.getLastOrder());
-        printer.println();
-      }
-
-      printer.close();
-    } catch (IOException e) {
-
-      System.out.println(e);
-    }
   }
 
   public ArrayList<Order> getUserOrders(User user, ArrayList<Order> allOrders) {

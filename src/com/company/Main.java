@@ -77,10 +77,9 @@ public class Main {
                   case "0":
                     return;
                   default:
-                    System.out.println("Neatpažinta įvestis");
+                    System.out.println("Neatpažinta įvestis\n");
                     break;
                 }
-
 
               } else {
                 printUserMenu();
@@ -114,6 +113,8 @@ public class Main {
                         trailerToRent = trailersDB.getTrailer(3500);
                         rentTrailerByWeigth(trailersDB, ordersDB, sc, allOrders, userToLogin, trailerToRent);
                         break;
+                      default:
+                        System.out.println("Neatpažinta įvestis.\n");
                     }
                     break;
 
@@ -159,9 +160,9 @@ public class Main {
           System.out.print("Įveskite slaptažodį: ");
           String newPassword = sc.nextLine();
           if (usersDB.addUser(new User(newUsername, newPassword))) {
-            System.out.println("Registracija sėkminga!");
+            System.out.println("Registracija sėkminga!\n");
           } else {
-            System.out.println("Toks vartotojas jau egzistuoja");
+            System.out.println("Toks vartotojas jau egzistuoja\n");
           }
           usersDB.getAllEntries();
           break;
@@ -183,13 +184,14 @@ public class Main {
         allTrailers.size() + 1, rentalPrice, false);
     allTrailers.add(newTrailer);
     trailersDB.updateTrailer(newTrailer);
+    System.out.println("Nauja priekaba sėkmingai pridėta.\n");
   }
 
   private static void removeTrailer(TrailerDatabase trailersDB, String licensePlateToRemove) throws IOException {
     Trailer trailerToRemove = trailersDB.getTrailer(licensePlateToRemove);
     if (trailerToRemove != null) {
       trailersDB.removeTrailer(trailerToRemove);
-      System.out.println("Priekaba sėkmingai panaikinta.");
+      System.out.println("Priekaba sėkmingai panaikinta.\n");
     } else {
       System.out.println("Priekaba su tokiu valstybiniu numeriu nerasta.\n");
     }
@@ -199,7 +201,7 @@ public class Main {
     System.out.println("1. Įvesti naują priekabą");
     System.out.println("2. Panaikinti priekabą");
     System.out.println("3. Pakeisti priekabos valstybinį numerį");
-    System.out.println("0. Atsijungti");
+    System.out.println("0. Atsijungti\n");
   }
 
   private static void rentTrailerByWeigth(TrailerDatabase trailersDB, OrderDatabase ordersDB, Scanner sc, ArrayList<Order> allOrders, User userToLogin, Trailer trailerToRent) {
@@ -210,9 +212,8 @@ public class Main {
       if (confirmChoice.equals("1")) {
 
         trailerToRent.setRented(true);
-        Order newOrder = new Order(allOrders.size() + 1, userToLogin.getUsername(), LocalDate.now(), trailerToRent.getLicensePlate(), false);
+        Order newOrder = new Order(userToLogin.getUsername(), LocalDate.now(), trailerToRent.getLicensePlate(), false);
         allOrders.add(newOrder);
-        userToLogin.setLastOrder(newOrder.getId());
         try {
           trailersDB.updateTrailer(trailerToRent);
         } catch (IOException e) {
@@ -226,7 +227,7 @@ public class Main {
         System.out.println("Neatpažinta įvestis\n");
       }
     } else {
-      System.out.println("Šiuo metu laisvų priekabų pasirinktoje kategorijoje neturime.");
+      System.out.println("Šiuo metu laisvų priekabų pasirinktoje kategorijoje neturime.\n");
     }
   }
 
@@ -267,6 +268,7 @@ public class Main {
   private static void confirmChoiceMenu() {
     System.out.println("1. Patvirtinti pasirinkimą");
     System.out.println("2. Grįžti atgal\n");
+    System.out.print("Įveskite pasirinkimą: ");
   }
 
   public static void returnTrailer(Trailer trailer, User user, OrderDatabase orderDatabase, TrailerDatabase trailerDatabase) throws IOException {
@@ -278,10 +280,11 @@ public class Main {
           && order.getLicencePlate().equalsIgnoreCase(trailer.getLicensePlate())
           && order.getUsername().equalsIgnoreCase(user.getUsername())) {
         trailerDatabase.updateTrailer(trailer);
-        orderDatabase.updateOrder(order);
+        order.setReturned(true);
+        orderDatabase.updateOrder(allOrders);
         return;
       }
     }
-    System.out.println("Priekabos grąžinti neįmanoma");
+    System.out.println("Priekabos grąžinti neįmanoma\n");
   }
 }
